@@ -76,7 +76,20 @@ namespace UserManagementSystem.Controllers
                 .ToList()
             });
         }
-        
+
+        [HttpGet("altuserfulldata/{id}")]
+        public async Task<IActionResult> AltGetUserFullData(long id)
+        {
+            var serviceResult = await _userService.AltGetUserFullData(id);
+
+            if (serviceResult == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(serviceResult);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserRequest user)
         {

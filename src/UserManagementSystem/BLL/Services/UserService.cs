@@ -64,12 +64,32 @@ namespace UserManagementSystem.BLL.Services
                 Age = userDalResult.Age,
                 Email = userDalResult.Email,
                 Phones = phoneDalResult
-                .Select(r=>new GetUserFullDataPhonesResult()
+                .Select(r => new GetUserFullDataPhonesResult()
                 {
                     PhoneNumber = r.PhoneNumber,
                 })
                 .ToList(),
             };
+        }
+
+        public async Task<AltGetUserFullDataResult[]> AltGetUserFullData(long id)
+        {
+            var dalResult = await _userRepository.AltGetUserFullData(id);
+
+            if (dalResult.Length == 0)
+            {
+                return null;
+            }
+
+            return (dalResult
+                .Select(r => new AltGetUserFullDataResult()
+                {
+                    Name = r.Name,
+                    Age = r.Age,
+                    Email = r.Email,
+                    PhoneNumber = r.PhoneNumber,
+                }))
+                .ToArray();
         }
 
         public async Task CreateUser(CreateUserModel user)

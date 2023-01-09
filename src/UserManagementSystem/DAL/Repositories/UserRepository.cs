@@ -29,6 +29,14 @@ namespace UserManagementSystem.DAL.Repositories
             }
         }
 
+        public async Task<UserFullDataDal[]> AltGetUserFullData(long id)
+        {
+            using (IDbConnection db = new NpgsqlConnection(_connectionString))
+            {
+                return (await db.QueryAsync<UserFullDataDal>("SELECT users_table.id, name, age, email, phone_number AS PhoneNumber FROM users_table LEFT JOIN users_phones_table ON users_phones_table.user_id  = users_table.id WHERE users_table.id = @id;", new { id })).ToArray();
+            }
+        }
+
         public async Task CreateUser(UserDal user)
         {
             using (IDbConnection db = new NpgsqlConnection(_connectionString))
