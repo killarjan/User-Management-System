@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Hosting;
+using Prometheus.Client.AspNetCore;
+using Prometheus.Client.DependencyInjection;
 using UserManagementSystem.BLL.Services;
 using UserManagementSystem.DAL.Repositories;
-using UserManagementSystem.Models.Users.Requests;
 
 namespace UserManagementSystem
 {
@@ -20,6 +20,7 @@ namespace UserManagementSystem
         {
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddMetricFactory();
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
             services.AddScoped<UserService>();
             services.AddScoped<PhoneService>();
@@ -44,6 +45,8 @@ namespace UserManagementSystem
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UsePrometheusServer();
 
             app.UseEndpoints(endpoints =>
             {
